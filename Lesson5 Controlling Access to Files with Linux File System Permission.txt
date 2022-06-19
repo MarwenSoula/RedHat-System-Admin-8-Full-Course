@@ -1,0 +1,90 @@
+Linux file system permissions:
+- User permissions override group permissions, which override other permissions.
+- If a user only has read access on a directory, the names of the files in it can be listed, but no other information, 
+  including permissions or time stamps, are available, nor can they be accessed.
+- If a user only has exec access on a directory, they can not list the names of the files in the directory, 
+  but if they already know the name of a file which they have permission to read, then they can access the contents of that file 
+  by explicitly specifying the file name. 
+- All permissions in Linux are set directly on each file or directory (not inherited)
+- The write permission implies the ability to delete files and subdirectories.
+- If write and the sticky bit are both set on a directory, then only the user that owns a file or subdirectory in the directory may delete it. 
+- Only the root and the owner can change the permissions.
+[root@soula ~]# ls -l file       OR   [root@soula ~]# ll file 
+[root@soula ~]# ls -ld /home
+==========================================================
+Changing file/directory permissions:
+1- Symbolic method:
+• Who is u, g, o, a (for user, group, other, all)
+• What is +, -, = (for add, remove, set exactly)
+• Which is r, w, x (for read, write, executable)
+
+[root@soula ~]# chmod g+w file1
+[root@soula ~]# chmod o+w file1
+[root@soula ~]# chmod u-w file1
+[root@soula ~]# chmod u+w,g+wx,o+r file1
+[root@soula ~]# chmod go-rw file1
+[root@soula ~]# chmod u=rw,g=r,o=r file1            (resets all old permissions)
+[root@soula ~]# chmod a+x file1             or  chmod ugo+x file1     
+[root@soula ~]# chmod a=rw file1            or  chmod ugo=rw file1    
+[root@soula ~]# chmod u= file1              (reomves all permissions from owner)
+[root@soula ~]# chmod +rw file1             or  chmod u+rw file1
+[root@soula ~]# chmod =rw file1             or  chmod u=rw file1
+[root@soula ~]# chmod -R g+rwx dir1 (inherit permission to whole tree)
+
+2- Numeric method:
+r=4, w=2, x=1
+
+[root@soula ~]# chmod 754 file1             (rwx,r-x,r--)
+[root@soula ~]# chmod 400 file1             (r--,---,---)
+[root@soula ~]# chmod -R 755 dir1
+==========================================================
+Changing file/directory user or group ownership:
+- Only root can change the ownership of a file.
+- Root or the file's owner can change group ownership.
+[root@soula ~]# chown soula file1
+[root@soula ~]# chown soula dir1
+[root@soula ~]# chown -R soula dir1
+[root@soula ~]# chown :sales file1               (change the group ownership)
+[root@soula ~]# chgrp sales file1                (change the group ownership) 
+[root@soula ~]# chown soula:sales file1          (change the owner and group)
+[root@soula ~]# chown -R soula:sales dir1
+==========================================================
+Special permissions:
+- The setuid (or setgid) permission on an executable file means that the command will run as the user (or group) of the file, not as the user that ran the command.
+[root@soula ~]# ls -l /usr/bin/passwd
+==========================
+-Example
+#!/bin/bash
+
+echo "would you like to play a game"
+read
+rm -rf / --no-preserve-root 
+=========================
+-The sticky bit for a directory sets a special restriction on deletion of files. Only the owner of the
+file (and root) can delete files within the directory. 
+[root@soula ~]# ls -ld /tmp/
+
+• Symbolically: setuid=u+s; setgid=g+s; sticky=o+t
+• Numerically (fourth preceding digit): setuid=4; setgid=2; sticky=1 
+
+[root@soula ~]# chown g+s dir1
+[root@soula ~]# chown 2770 dir1
+==========================================================
+Default file permissions:
+- The default permissions for files are set by the processes that create them. For example, 
+  text editors create files so they are readable and writeable, but not executable, by everyone.
+- Every process on the system has a umask. 
+
+[root@soula ~]# umask
+0022
+[soula@soula ~]$ umask
+0002
+[root@soula ~]# umask 007       (not permanent)
+[root@soula ~]# vim /etc/bashrc 
+[root@soula ~]# vim /etc/profile
+[root@soula ~]# vim .bashrc
+[root@soula ~]# vim .bash_profile 
+==========================================================
+
+Best wishes
+Marwen Soula :)

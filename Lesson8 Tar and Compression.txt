@@ -1,0 +1,27 @@
+- Tar is the tape archiver and was created a long time ago
+- by default it doesn't compress data 
+- basic use is to compress extract or list
+
+[root@soula ~]# tar -cvf my_archive.tar /home/etc
+[root@soula ~]# tar -tvf    (will show contents of an archive)
+[root@soula ~]# tar -xvf    (my_archive extarts to the current directory)
+-C switch the output path
+HINT:
+linux system don't care about the extension!!!!
+Verify with file command
+=======================================================
+- A wide range of compression solutions is available for linux 
+- gzip is the most common comression utility
+- bzip2 is an less common, better but low
+[root@soula ~]# gzip archive.tar              (compress tar file)
+[root@soula ~]# gunzip archive.tar.gz         (decompress tar.gz file)
+[root@soula ~]# bzip2 archive.tar             (compress tar file)
+[root@soula ~]# bzip2 -d archive.tar.bz2      (decompress tar.bz2 file)
+[root@soula ~]# bunzip2 archive.tar.bz2       (decompress tar.bz2 file)
+[root@soula ~]# tar cvfz archive.tar.gz /etc  (archive and compress in one time)
+[root@soula ~]# tar xvfz archive.tar.gz       (decompress)
+[root@soula ~]# tar cvfj archive.tar.bz2 /etc (archive and compress in one time)
+[root@soula ~]# tar xvfj archive.tar.bz2      (decompress)
+
+Best wishes
+Marwen Soula :)

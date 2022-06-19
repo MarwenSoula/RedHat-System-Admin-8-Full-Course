@@ -1,0 +1,30 @@
+Standard input, standard output, and standard error:
+[root@soula~]# date > /tmp/saved-timestamp
+[root@soula~]# tail -n 100 /var/log/dmesg > /tmp/last-100-boot-messages
+[root@soula~]# cat file1 file2 file3 file4 > /tmp/all-four-in-one
+[root@soula~]# ls -a > /tmp/my-file-names
+===============================================
+Append output to an existing file:
+[root@soula~]#echo "new line of information" >> /tmp/many-lines-of-information
+[root@soula~]# find /etc -name passwd 2> /tmp/errors
+[root@soula~]# find /etc -name passwd > /tmp/output 2> /tmp/errors
+[root@soula~]# find /etc -name passwd > /tmp/output 2> /dev/null
+[root@soula~]# find /etc -name passwd &> /tmp/save-both
+[root@soula~]# find /etc -name passwd >> /tmp/save-both 2>&1
+===============================================
+Constructing pipe lines:
+[root@soula~]# ls -l /usr/bin | less
+[root@soula~]# ls | wc -l > /tmp/how-many-files
+[root@soula~]# ls -t | head -n 10 > /tmp/ten-last-changed-files
+[root@soula~]# ls -l | tee /tmp/saved-output
+[root@soula~]# ls -l | tee /dev/pts/0 | mail -s subject
+===============================================
+Editing files with Vim:
+[root@soula~]# vim file1
+===============================================
+Editing files with nano:
+[root@soula~]# nano file1
+===============================================
+
+Best wishes
+Marwen Soula:)

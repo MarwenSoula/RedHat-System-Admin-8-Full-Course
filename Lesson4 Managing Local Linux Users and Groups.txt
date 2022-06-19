@@ -1,0 +1,112 @@
+Users:
+[root@soula ~]# ls -l
+[root@soula ~]# ps aux
+[root@soula ~]# useradd --help
+[root@soula ~]# useradd soula
+[root@soula ~]# passwd soula
+[root@soula ~]# useradd -G admin -u 1005 -s /usr/sbin/nologin soula
+[root@soula ~]# useradd -c "Kevin SSL" -e 2016-12-31 -s /bin/csh kevin
+Note: other types of shell: sh/zsh/ksh/csh/python
+To verify: 
+[root@soula ~]# id
+[root@soula ~]# id soula
+[root@soula ~]# id -u soula          (UID for soula)
+[root@soula ~]# tail -n 1 /etc/passwd
+username:password:UID:GID:GECOS:/home/dir:shell
+note:
+GECOS field is arbitrary text, which usually includes the user's real name.
+[root@soula ~]# tail -n 1 /etc/shadow
+name:password:1astchange:minage:maxage:warning:inactive:expire:b1ank
+
+The number 1 indicates an MD5 hash. The number 6 appears when a SHA-512 hash is used.
+[root@soula ~]# authconfig --passalgo=<descrypt|bigcrypt|md5|sha256|sha512>    (to change the hashing type)
+
+note:
+!! indicates that the user has no password
+==========================================================
+Groups:
+-Primary group is the user Private Group (UPG).
+[root@soula ~]# groupadd sales
+[root@soula ~]# groupadd -g 1005 admin
+
+To verify:
+[root@soula ~]# id
+[root@soula ~]# id soula
+[root@soula ~]# grep sales /etc/group
+groupname:password:GID:list,of,users,in,this,group
+
+[root@soula ~]# groupmod -g 2000 admin
+[root@soula ~]# groupadd old
+[root@soula ~]# groupmod -n new old       (rename a group)
+==========================================================
+Switching users with su:
+[root@soula ~]# su soula
+[soula@soula root]$ exit
+exit
+[root@soula ~]# su - soula
+[soula@soula ~]$ 
+[soula@soula ~]$ su 
+[soula@soula ~]$ su -
+==========================================================
+Running commands as root with sudo:
+[root@soula ~]# vim /etc/sudoers
+soula   ALL=(ALL)       ALL
+%sales  ALL=(ALL)       ALL
+
+[soula@soula ~]$ sudo passwd ahmed
+[soula@soula ~]$ sudo passwd -l ahmed
+To verify:
+[root@soula ~]# tail -f /var/log/secure
+==========================================================
+Modify users:
+[root@soula ~]# usermod -L soula    (lock the user)
+[root@soula ~]# usermod -U soula    (unlock the user)
+[root@soula ~]# usermod -G sales soula    (overwrite secondary group)
+[root@soula ~]# usermod -aG admin soula   (append to secondary group)
+or:
+[root@soula ~]# vim /etc/group
+To verify:
+[root@soula ~]# id soula
+==========================================================
+Delete users:
+[root@soula ~]# userdel soula
+[root@soula ~]# userdel -r test       (removes home directory)
+Note: 
+In RHEL8 the useradd command assigns new users the first free UID number available in the range starting from UID 1000 or above. 
+[root@soula ~]#useradd soula
+[root@soula ~]# ls /home/ -l
+drwx------. 5 soula soula 4096 Jun 21 21:36 soula
+[root@soula ~]#userdel soula
+[root@soula ~]#useradd ahmed
+[root@soula ~]# ls /home/ -l
+drwx------. 5 ahmed ahmed    74 Jun 23 05:00 soula
+drwx------. 3 ahmed ahmed    74 Jun 23 02:55 ahmed
+to verify ownership!!!!
+==========================================================
+Delete groups:
+[root@soula ~]# groupdel admin
+==========================================================
+UID ranges:
+UID 0 is always assigned to the superuser account, root.
+UID 1-200 is a range of "system users" assigned statically to system processes by Red Hat.
+UID 201-999 is a range of "system users" used by system processes that do not own files on the file system.
+UID 1000+ is the range available for assignment to regular users.
+
+To change the default:
+[root@soula ~]# vim /etc/login.defs 
+[root@soula ~]# vim /etc/default
+==========================================================
+Password aging:
+[root@soula ~]# chage -l soula        (list info about the user)
+[root@soula ~]# chage -E 2017-1-1 soula     (expire the user on the specified address)
+[root@soula ~]# chage -m 1 soula         (set minimum number of days before password change) 
+[root@soula ~]# chage -M 120 soula       (set maximim number of days before password change)
+[root@soula ~]# passwd -x 90 soula        (the password will expire after 90 days)
+==========================================================
+Create a default file or directoy in the user's home directory:
+[root@soula ~]# touch /etc/skel/new_file
+==========================================================
+
+
+Best wishes:
+Marwen Soula :)

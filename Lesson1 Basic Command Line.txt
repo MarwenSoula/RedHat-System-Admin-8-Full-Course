@@ -1,0 +1,72 @@
+Shell basics:
+[root@soula ~]#clear              (or Ctrl+l)
+[root@soula ~]#reset
+[root@soula ~]#ls
+[root@soula ~]#ls -l
+[root@soula ~]#ls --all
+[root@soula ~]#ls -a
+[root@soula ~]#ls -la 
+[root@soula ~]#ls -la /home
+[root@soula ~]#exit             (or Ctrl+d)
+==============================================
+[root@soula ~]#date --help
+Usage: date [OPTION]... [+FORMAT]
+  or:  date [-u|--utc|--universal] [MMDDhhmm[[CC]YY][.ss]]
+[ ] surround optional items
+... represents an arbitrary-length list of items of that type
+| means only one of them can be specified
+<> represents variable data. For example <filename> 
+
+==============================================
+Examples of simple commands:
+[root@soula ~]#date 
+[root@soula ~]#cal
+[root@soula ~]#cal 2016
+[root@soula ~]#cal 3
+[root@soula ~]#cal 3 2016
+[root@soula ~]#passwd :this command used to change password of root or user
+[root@soula ~]#passwd soula
+[root@soula ~]#file /etc/passwd this command used to know type of file
+ASCII that means this file is editable
+there are other files are not editable are  exictable 
+[root@ ~]#file /home
+[root@soula ~]#which passwd : this command used to know the path of file
+[root@soula ~]#file /bin/passwd
+[root@soula Desktop]# head /etc/passwd
+[root@soula Desktop]# head -n 3 /etc/passwd
+[root@soula Desktop]# head -3 /etc/passwd
+[root@soula Desktop]# head /etc/passwd -n 3
+[root@soula Desktop]# tail /etc/passwd
+[root@soula Desktop]# tail -n 3 /etc/passwd
+[root@soula Desktop]# tail -3 /etc/passwd
+[root@soula Desktop]# tail /etc/passwd -n 3
+[root@soula Desktop]# wc /etc/passwd
+[root@soula Desktop]# wc -lwc /etc/passwd
+[root@soula Desktop]# wc -l /etc/passwd
+==============================================
+Tab completion:
+[root@soula Desktop]# pas   <TAB>
+passwd       paste        pasuspender
+[root@soula Desktop]# pass   <TAB>
+[root@soula Desktop]# passwd
+[root@soula Desktop]# ls /etc/pas    <TAB>
+[root@soula Desktop]# useradd --     <TAB>
+==============================================
+Command history:
+[root@soula ~]# cat .bash_history 
+[root@soula ~]# history
+[root@soula ~]# !88 repeat the commmand number 88
+[root@soula ~]# history -c           (to clear the history)
+
+==============================================
+Ctrl+a     Jump to the beginning of the command line.
+Ctrl+e     Jump to the end of the command line.
+Ctrl+u     delete full line
+[root@soula ~]#ls ; date ; cal
+[root@soula ~]#ls && date         (logical AND)
+[root@soula ~]#ls /div || date    (logical OR)
+[root@soula ~]#ls /etc/passwd
+
+==============================================
+best wishes:
+Marwen Soula :)

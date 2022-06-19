@@ -1,0 +1,21 @@
+Access control list:
+- ACL gives permissions to more than one user or group on a file or a directory.
+- ACL sets default permissions for newly created files and directories.
+
+[root@soula ~]# ls -l file.txt
++  (The "+" at the end of the 10-character permission string indicates that there are ACL settings
+associated with this file)
+
+[root@soula ~]# getfacl file.txt
+[root@soula ~]# getfacl .                 (display ACL settings on the working directory)
+ 
+[root@soula ~]# setfacl -m u:soula:rw file.txt
+[root@soula ~]# setfacl -m o::rw file.txt
+[root@soula ~]# setfacl -m g:sales:rw dir1
+[root@soula ~]# setfacl -R -m g:sales:rw dir1 
+[root@soula ~]# setfacl -m d:g:sales:rw dir1  (inherit permission for the new files, working only on dir)
+[root@soula ~]# setfacl -x u:soula file.txt
+[root@soula ~]# setfacl -b file.txt           (roll back to the default ACL)
+
+Best wishes:
+Marwen Soula :)

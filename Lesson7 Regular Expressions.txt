@@ -1,0 +1,46 @@
+Writing regular expressions:
+- Regular expressions are a language of their own, which means they have their own syntax and rules.
+- Used with tools like grep, Find, sed,.
+
+===================================================
+Matching Text with grep:
+[root@soula ~]# grep cat /usr/share/dict/words 
+[root@soula ~]# grep ^cat /usr/share/dict/words 
+[root@soula ~]# grep cat$ /usr/share/dict/words 
+[root@soula ~]# grep ^cat$ /usr/share/dict/words 
+[root@soula ~]# grep c.t /usr/share/dict/words      
+[root@soula ~]# grep ^c.t$ /usr/share/dict/words 
+[root@soula ~]# grep -e cat -e tele /usr/share/dict/words 
+
+. -i   case insensitive
+. -v   reverse
+. -n   number the lines
+. -A3  DIsplay 3 lines after the regular expression match.
+. -B3  DIsplay 3 lines before the regular expression match.
+. -e   Used for multiple search patterns
+[root@soula ~]# ps aux | grep root
+[root@soula ~]# ps aux | grep ^root
+===================================================
+find, locate
+Locate uses a database, built by updatedb to find files in a database
+find is the most flexible tool that allows you to find files based on many criteria
+[root@soula ~]# locate useradd (no output)
+[root@soula ~]# updatedb       (should happen even schedule cron job)
+[root@soula ~]# find / -name "hosts"
+[root@soula ~]# find / -type f -size +100M 
+[root@soula ~]# find / -user redhat
+[root@soula ~]# find /etc/ exec grep -l redhat {} \;
+[root@soula ~]# find /etc -size +100M -exec grep -l redhat {} \; 
+[root@soula ~]# find /etc -size +100c-exec grep -l redhat {} \; -exec cp {} /tmp; 2>/dev/null
+[root@soula ~]# find / -perm /4000 2>/dev/null
+
+===================================================
+sed
+[root@soula ~]# sed 2q /etc/passwd               (head -n 2 /etc/passwd)
+[root@soula ~]# sed -n /^root/p /etc/passwd      (grep ^root /etc/passwd)
+[root@soula ~]# sed -n 5p /etc/passwd            (print the 5th line)
+[root@soula ~]# sed -i 's/soula/SOULA/g' file    (substitute soula with SOULA globally)
+
+===================================================
+Best wishes:
+Marwen Soula:)
