@@ -31,7 +31,7 @@ find is the most flexible tool that allows you to find files based on many crite
 [root@soula ~]# find / -user redhat
 [root@soula ~]# find /etc/ exec grep -l redhat {} \;
 [root@soula ~]# find /etc -size +100M -exec grep -l redhat {} \; 
-[root@soula ~]# find /etc -size +100c-exec grep -l redhat {} \; -exec cp {} /tmp; 2>/dev/null
+[root@soula ~]# find /etc -size +100c -exec grep -l redhat {} \; -exec cp {} /tmp \; 2>/dev/null
 [root@soula ~]# find / -perm /4000 2>/dev/null
 
 ===================================================
