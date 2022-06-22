@@ -1,0 +1,10 @@
+3- Gestion des utilisateurs & des groupes :
+a. Créez 03 utilisateurs (santos, natasha, blandine)
+b. Santos a comme groupe secondaire opérations
+c. Natasha a comme groupe secondaire exploitations. :
+d. Blandine ne doit pas pouvoir se logguer dans le système et son compte est
+inactif.
+e. Le mot de passe pour tous les utilisateurs est tek-up2021.
+Configurer le système pour que les UID et GID des utilisateurs et groupes puissent
+commencer à 1024. La durée de validité du mot de passe doit être de 30 jours et le mot
+de passe minimale doit être composé de 08 caractères au minimum.
