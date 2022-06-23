@@ -1,0 +1,26 @@
+1:dans votre répertoire personnel créer un répertoire appelé « mybackups » qui sera votre répertoire de travail dans cet exercice.
+
+2:créer une archive tar non compressée de /etc/udev sous mybackups
+
+3:lister le contenu de l'archive créée dans la question 2
+
+4:créer une nouvelle archive de /etc/udev que vous allez compresser avec gzip. faites une comparaison entre la taille de la première et de la deuxième archive
+
+5:extraire l'archive de la question 4 dans votre répertoire personnel
+
+
+6:copier le fichier /usr/share/dict/linux.words dans votre répertoire personnel puis le compresser avec gzip
+
+7:afficher les informations sur le fichier words.gz en utilisant la commande gzip -l.quel est le taux de la compression ?
+
+8:Décompresser le fichier words.gz
+
+9:utiliser à présent le couple bzip2 et bunzip2 pour compresser/décompresser le fichier words
+
+10:archiver et compresser le fichier words avec zip
+
+11:archiver et compresser le répertoire /etc/udev et tout son contenu avec zip
+
+12:lister le contenu de l'archive précédente
+
+13:décompresser l'archive précédente dans votre dossier personnel
