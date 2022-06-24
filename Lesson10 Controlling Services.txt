@@ -1,0 +1,37 @@
+[root@soula ~]# systemctl
+[root@soula ~]# systemctl -t help    (Query the state of all units )
+[root@soula ~]# systemctl --type service          (Query the state of only the service units)
+OR)
+[root@soula ~]# systemctl list-units --type service   (List all active services)
+[root@soula ~]# systemctl list-units --type service --all   (List all active and inactive services)
+[root@soula ~]# systemctl --failed --type=service           (List failed services)
+
+[root@soula ~]# systemctl status sshd.service
+[root@soula ~]# systemctl status sshd
+[root@soula ~]# systemctl status firewalld.service
+[root@soula ~]# systemctl status firewalld
+[root@soula ~]# systemctl status firewalld -l
+[root@soula ~]# systemctl is-active sshd
+[root@soula ~]# systemctl is-enabled sshd
+=============================================================
+Controlling System Services:
+[root@soula ~]# systemctl status sshd
+[root@soula ~]# systemctl restart sshd
+[root@soula ~]# systemctl stop sshd
+[root@soula ~]# systemctl start sshd
+[root@soula ~]# systemctl reload sshd         (Re-read the configuration file)
+=============================================================
+Masking services:
+A masked service can not be started manually or automatically
+network vs NetworkManager 
+iptables vs firewalld
+[root@soula ~]# systemctl mask network
+[root@soula ~]# systemctl unmask network
+=============================================================
+Enabling system daemons to start or stop at boot:
+[root@soula ~]# systemctl enable sshd
+[root@soula ~]# systemctl disable sshd
+=============================================================
+
+Best wishes
+Marwen Soula:)
