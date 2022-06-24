@@ -1,0 +1,28 @@
+- Scheduling Recurring Jobs with cron:
+[root@soula ~]# systemctl status crond          (Installed and enabled by default)
+[root@soula ~]# crontab -e                      (vi editor will be started)
+#comment line          (optional)
+Minutes      Hours      Day-of-Month       Month       Day-of-Week       Command
+
+• * for always
+• A number
+• x-y for a range
+• x,y for lists
+• */x to indicate an i nterval of x    (*/7 in the minutes column will run a job exactly every seven minutes)
+• Three-letter abbreviations can be used for both month and wee kdays.
+• If the command contains an unescaped(%) that % will be treated as a newline, and everything after the % will be fed to the command on stdin.
+
+Ex:
+0  9  2  2  *  reboot 
+*/7  9-16  *  Jul  5  echo "Hello From TEK-UP"
+58  23  *  *  1-5  tar cf /root/etc.tar /etc
+[root@soula ~]# crontab -l                      (List the jobs for the current user)
+[root@soula ~]# crontab -r                      (Remove all jobs for the current users)
+[root@soula ~]# crontab -e -u abeer             (Root can manage the jobs for another user)
+[root@soula ~]# crontab                         (stdin will be used)
+[root@soula ~]# crontab <file_name>             (Remove all jobs, and replace with the jobs read from  <file_name>)
+
+
+==========================================
+Best wishes:
+Marwen Soula :)
