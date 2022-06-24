@@ -1,0 +1,88 @@
+Default Network interface names:
+• Ethernet interfaces begin with en, WLAN interfaces begin with wl, and WWAN interfaces begin with WW
+
+=================================================================
+Displaying IP addresses:
+[root@soula ~]# ifconfig
+[root@soula ~]# ip addr help
+[root@soula ~]# ip addr            (Display IP information)
+[root@soula ~]# ip addr show       (Display IP information)
+[root@soula ~]# ip addr show eno16777736
+=================================================================
+Configuring IP addresses:
+[root@soula ~]# ifconfig eno16777736 192.168.1.10 netmask 255.255.255.0
+-Note: Prefix will be the default if not configured
+[root@soula ~]# ip addr add dev eno16777736 192.168.1.10/24      (Appears as a secondary IP)
+-Note: Prefix will be /32 if not configured
+=================================================================
+Configuring Networking with nmcli(NetworkManager CLI):
+after managing the network with nmcli, it creates a file under a specific path
+[root@soula ~]# nmcli 
+[root@soula ~]# nmcli help
+[root@soula ~]# nmcli con show
+[root@soula ~]# nmcli con show eno160
+[root@soula ~]# nmcli connection add con-name testing ifname eno16777736 type ethernet ip4 192.168.1.10/24
+vim /etc/sysconfig/network-scripts
+[root@soula ~]# nmcli connection down eno160
+[root@soula ~]# nmcli connection up testing 
+
+- If the testing connection is lost, the eno160 connection will attempt to autoconnect. 
+  To administratively disable an interface and prevent any auto connection, use nmcli dev disconnect DEVICENAME.
+
+[root@soula ~]# nmcli con mod eno16777736 connection.autoconnect no   (Turn off auto connection)
+[root@soula ~]# nmcli con mod eno16777736 ipv4.dns 8.8.8.8    (Configure a DNS server)
+[root@soula ~]# nmcli con mod eno16777736 +ipv4.dns 4.2.2.3   (Add another DNS server)
+[root@soula ~]# nmcli con mod eno16777736 +ipv4.address 10.0.0.1/24   (Add a secondary address)
+[root@soula ~]# nmcli con mod eno16777736 ipv4.method manual ipv4.address 192.168.1.10/24 ipv4.gateway 192.168.1.1 ipv4.dns 8.8.8.8 connection.autoconnect yesvim
+
+- The nmcli con mod will save the setting to the configuration files. To activate the changes, the connection needs to be activated or reactivated.
+
+[root@soula ~]# nm-connection-editor              (GUI version of nmcli)
+=================================================================
+Configuring Networking with nmtui:
+[root@soula ~]# nmtui
+[root@soula ~]# nmcli con down eno16777736 ; nmcli con up eno16777736
+=================================================================
+Editing Network Configuration Files:
+[root@soula ~]# vim /etc/sysconfig/network-scripts/ifcfg-eno16777736 
+[root@soula ~]# nmcli connection reload eno16777736
+[root@soula ~]# nmcli connection down eno16777736
+[root@soula ~]# nmcli connection up eno16777736
+=================================================================
+Configuring Host Names:
+[root@soula ~]# hostname
+[root@soula ~]# hostname soula.redhat.com
+[root@soula ~]# vim /etc/hostname 
+[root@soula ~]# hostnamectl           (Display information about the system)
+[root@soula ~]# hostnamectl status    (Display information about the system)
+[root@soula ~]# hostnamectl set-hostname www.redhat.com
+
+- The static host name is stored in /etc/hostname. Previous versions of RHEL stored the hostname as a variable in the /etc/sysconfig/network file.
+=================================================================
+Configuring DNS:
+[root@soula ~]# cat /etc/resolv.conf 
+[root@soula ~]# vim /etc/sysconfig/network-scripts/ifcfg-eno16777736 
+DNS1=8.8.8.8
+[root@soula ~]# nmcli con mod eno16777736 ipv4.dns 8.8.8.8    (Configure a DNS server)
+[root@soula ~]# nmcli con mod eno16777736 +ipv4.dns 4.2.2.3   (Add another DNS server)
+[root@soula ~]# vim /etc/hosts
+=================================================================
+Configure Routing:
+[root@soula ~]# route -n           (Display routing table)
+[root@soula ~]# ip route           (Display routing table)
+[root@soula ~]# ip route show      (Display routing table)
+[root@soula ~]# ip route add 20.0.0.0/8 via 192.168.1.1     (Add a static route)
+[root@soula ~]# vim /etc/sysconfig/network-scripts/ifcfg-eno16777736 
+GATEWAY=192.168.1.1
+[root@soula ~]# nmcli con mod eno16777736 ipv4.gateway 192.168.1.1
+=================================================================
+Network tools:
+[root@soula ~]# ping -c 5 127.0.0.1
+[root@soula ~]# netstat -tulpen      (Listening ports)
+[root@soula ~]# traceroute 8.8.8.8
+=================================================================
+
+Best wishes
+Marwen Soula:)
+
+
