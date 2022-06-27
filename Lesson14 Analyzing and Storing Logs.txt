@@ -1,0 +1,85 @@
+ System logging:
+1- Direct write            (ex: Apache)
+2- Through systemctl       (journald) collects logs during the starting of the machine (boot), journald is not permanent 
+we can configure the config file to make it permanent 
+3- Through rsyslogd        (/var/log)
+========================================================
+journald:
+[root@soula ~]# yum search journal
+[root@soula ~]# systemctl status systemd-journald
+[root@soula ~]# journalctl 
+[root@soula ~]# journalctl -n        (shows the last 10 log entries)
+[root@soula ~]# journalctl -n 5      (shows the last 5 log entries)
+[root@soula ~]# journalctl -f        (like tail -f)
+[root@soula ~]# journalctl -p err    (filter the output to a specific severity)
+[root@soula ~]# journalctl -b        (Logs during boot)
+[root@soula ~]# journalctl --since yesterday
+[root@soula ~]# journalctl --since yesterday --until 9:30:00
+[root@soula ~]# journalctl _PID=1
+[root@soula ~]# journalctl _UID=0
+[root@soula ~]# journalctl _SYSTEMD_UNIT=sshd
+[root@soula ~]# journalctl _SYSTEMD_UNIT=NetworkManager
+[root@soula ~]# cat /etc/systemd/journald.conf 
+========================================================
+rsyslogd:
+[root@soula ~]# yum search rsyslog
+[root@soula ~]# systemctl status rsyslog
+[root@soula ~]# vim /etc/rsyslog.conf 
+# Provides UDP syslog reception
+#$ModLoad imudp
+#$UDPsoulaRun 514
+# Provides TCP syslog reception
+#$ModLoad imtcp
+#$InputTCPsoulaRun 514
+
+[root@soula ~]# systemctl restart rsyslog
+
+> Local logging:
+[root@soula ~]# tail -f /var/log/secure       
+[soula@soula ~]$ su -
+
+> Logging to a syslog soula:
+[root@soula ~]# vim /etc/rsyslog.conf 
+#### RULES ####
+*.*          @192.168.1.1                         (facility.priority)(UDP session)
+Or
+*.*         @@192.168.1.1                         (TCP sessions)
+Or
+*.*          @192.168.1.1:500                     (Change the default UDP port number)
+Or
+*.*          @@192.168.1.1:500                    (Change the default TCP port number)
+
+[root@soula ~]# systemctl restart rsyslog
+[root@soula ~]$ su -
+[root@soula ~]# tail -f /var/log/secure 
+========================================================
+Log file rotation:
+- Logs are "rotated" by the log rotate utility after a week by default to keep them from filling up the file system containing /var/log/.
+- When a log file is rotated, it is renamed with an extension indicating the date on which it was rotated.
+- A cron job runs the log rotate program daily to see if any logs need to be rotated.
+[root@soula ~]# vim /etc/logrotate.conf 
+[root@soula ~]# cd  /etc/logrotate.d/          (Any config here will overwrite the logrotate.conf file)
+========================================================
+Send a syslog message with logger:
+[root@soula ~]# logger "Log entry created locally"
+[root@soula ~]# logger -i "Log entry created locally"              (log the process ID too)
+[root@soula ~]# logger -p panic "Log entry created locally"     (mark given message with this priority)
+========================================================
+Store the system journal permanently:
+- By default, the systemd journal is kept in /run/log/journal, which means it is cleared when the system reboots.
+- If the directory /var/log/journal exists, the journal will log to that directory instead. The
+advantage of this is the historic data will be available immediately at boot.
+-  However, even with a persistent journal , not all data will be kept forever. The journal has a built-in log rotation mechanism that will trigger monthly.
+- by default, the journal will not be allowed to get larger than 10% of the file system it is on, or leave less than 15% of the file system free. These values can be tuned in /etc/systemd/journald.conf
+
+[root@soula ~]# mkdir /var/log/journal
+[root@soula ~]# chown root:systemd-journal /var/log/journal
+[root@soula ~]# chmod 2755 /var/log/journal
+[root@soula ~]# killall -USR1 systemd-journald         (or reboot the system)
+
+
+
+Best wishes:
+Marwen Soula :)
+
+

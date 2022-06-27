@@ -1,0 +1,68 @@
+Software Packages and RPM
+
+Linux www.redhat.com 4.18.0-240.el8.x86_64
+Linux www.redhat.com....Name
+4.18.0..........Version
+240.el8..........Release
+x86_64.........ARCH
+
+[root@soula ~]# uname -a
+[root@soula ~]# uname -r
+[root@soula ~]# arch 
+[root@soula ~]# cd /repo/AppStream/Packages
+[root@soula /repo/AppStream/Packages]# rpm -qa | grep -i vsftpd
+[root@soula /repo/AppStream/Packages]# rpm -ivh vsftpd-3.0.2-10.el7.x86_64.rpm     (Install a package)
+[root@soula /repo/AppStream/Packages]# rpm -Fvh vsftpd-3.0.2-10.el7.x86_64.rpm     (Update an installed package)
+[root@soula /repo/AppStream/Packages]# rpm -Uvh vsftpd-3.0.2-10.el7.x86_64.rpm     (Update and install a package)
+
+In some cases we use rpm for investigation means, if there is an issues on config file so you need to update the package which is his owner
+
+[root@soula /repo/AppStream/Packages]# rpm -qf /etc/vsftpd/vsftpd.conf 
+[root@soula /repo/AppStream/Packages]# rpm -ql vsftpd                              (Query an installed package)
+[root@soula /repo/AppStream/Packages]# rpm -qpl vsftpd-3.0.2-10.el7.x86_64.rpm     (Query a not-installed package)
+[root@soula /repo/AppStream/Packages]# rpm -qi vsftpd                              (Query info of an installed package)
+[root@soula /repo/AppStream/Packages]# rpm -qpi vsftpd-3.0.2-10.el7.x86_64.rpm     (Query info of a not-installed package)
+[root@soula /repo/AppStream/Packages]# rpm -qc vsftpd                              (Query config files of an installed package)
+[root@soula /repo/AppStream/Packages]# rpm -qpc vsftpd-3.0.2-10.el7.x86_64.rpm     (Query config files of a not-installed package)
+[root@soula /repo/AppStream/Packages]# rpm -qd vsftpd                  (Query doc files of an installed package)
+[root@soula /repo/AppStream/Packages]# rpm -qpd vsftpd-3.0.2-10.el7.x86_64.rpm  (Query doc files of a not-installed package)
+[root@soula /repo/AppStream/Packages]# which passwd
+
+
+
+==============================================================
+Yellowdog Updater, Modified (yum):
+1- Local Repo:
+[root@soula ~]# vim /etc/yum.repos.d/local.repo 
+
+[LocalRepo]
+name = Local
+baseurl = file:///path or in the exam case baseurl =https://RedHat-AppStream-Packages.com
+enabled = 1
+gpgcheck = 0
+
+
+[root@soula ~]# yum install gedit
+[root@soula ~]# yum remove gedit
+[root@soula ~]# yum remove -y gedit
+[root@soula ~]# yum search gedit
+[root@soula ~]# yum search all gedit
+[root@soula ~]# yum info gedit
+[root@soula ~]# yum update gedit
+[root@soula ~]# yum update               (install all updates)
+
+
+Note:
+yum remove will remove the package(s) listed and any package that requires the /repo/AppStream/Packages being removed
+==============================================================
+[root@soula ~]# yum repolist          (List all repo files)
+[root@soula ~]# yum list all          (List all available /repo/AppStream/Packages)
+[root@soula ~]# yum list installed    (List all installed /repo/AppStream/Packages)
+[root@soula ~]# yum remove bash
+[root@soula ~]# yum list kernel         (List all kernels)
+[root@soula ~]# tail -f /var/log/yum.log 
+[root@soula ~]# yum history 
+
+==============================================================
+Best wishes:
+Marwen Soula  :)

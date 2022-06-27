@@ -1,0 +1,58 @@
+
+Software packages and RPM redhat package manager:
+Ex:
+www.redhat.com 4.18.0-240.el8.x86_
+www.redhat.com....Name
+4.18.0.........Version
+240.e18..........Release
+x86_64.........ARCH
+
+[root@soula ~]# uname -a
+[root@soula ~]# uname -r
+[root@soula ~]# arch
+
+
+[root@soula Packages]# rpm -ivh vsftpd-3.0.2-10.el7.x86_64.rpm     (Install a package)
+[root@soula Packages]# rpm -qa | grep -i ftp
+[root@soula Packages]# rpm -e vsftpd 
+[root@soula Packages]# rpm -Fvh vsftpd-3.0.2-10.el7.x86_64.rpm     (Update an installed package)
+[root@soula Packages]# rpm -Uvh vsftpd-3.0.2-10.el7.x86_64.rpm     (Update and install a package)
+[root@soula Packages]# rpm -ql vsftpd                              (Query an installed package)
+[root@soula Packages]# rpm -qpl vsftpd-3.0.2-10.el7.x86_64.rpm     (Query a not-installed package)
+[root@soula Packages]# rpm -qi vsftpd                              (Query info of an installed package)
+[root@soula Packages]# rpm -qpi vsftpd-3.0.2-10.el7.x86_64.rpm     (Query info of a not-installed package)
+[root@soula Packages]# rpm -qc vsftpd                              (Query config files of an installed package)
+[root@soula Packages]# rpm -qpc vsftpd-3.0.2-10.el7.x86_64.rpm     (Query config files of a not-installed package)
+[root@soula Packages]# rpm -qd vsftpd                  (Query doc files of an installed package)
+[root@soula Packages]# rpm -qpd vsftpd-3.0.2-10.el7.x86_64.rpm  (Query doc files of a not-installed package)
+[root@soula Packages]# which passwd
+
+
+==============================================================
+Yellowdog Updater, Modified (yum):
+1- Local Repo:
+[root@soula ~]# vim /etc/yum.repos.d/local.repo 
+[LocalRepo]
+name = Local
+baseurl = file:///run/media/root/RHEL-7.2\ Server.x86_64
+enabled = 1
+gpgcheck = 0
+
+
+[root@soula ~]# yum install system-config-kickstart
+[root@soula ~]# yum remove system-config-kickstart
+[root@soula ~]# yum remove -y system-config-kickstart
+[root@soula ~]# yum search system-config-kickstart
+[root@soula ~]# yum search all system-config-kickstart
+[root@soula ~]# yum info system-config-kickstart
+[root@soula ~]# yum update system-config-kickstart
+[root@soula ~]# yum update               (install all updates)
+
+
+==============================================================
+[root@soula ~]# yum repolist          (List all repo files)
+[root@soula ~]# yum list all          (List all available packages)
+[root@soula ~]# yum history 
+==============================================================
+Best wishes:
+Marwen Soula:)
