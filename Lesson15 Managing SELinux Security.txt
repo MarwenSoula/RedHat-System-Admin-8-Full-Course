@@ -1,0 +1,87 @@
+Basic SELinux security concepts (Security Enhanced Linux):
+- There are two types of security, DAC (discretionary access control) and MAC (mandatory access control)
+- A primary goal of SELinux is to protect user data from system services that have been compromised.
+- In SElinux, system is defined as subject (users,services) and object (files/folders, ports, socket)
+- A context is a label on processes, files, and ports that determine access.
+- A boolean is a switch that enables/disables a set of policy rules. 
+- There is a policy rule that permits Apache (the web server process running as httpd_t) to access files and directories with a context normally found in 
+  /var/www/html and other web server directories (httpd_sys_content_t). 
+- There is no allow rule in the policy for files normally found in /tmp and /var/tmp, so access is not permitted.
+
+[root@soula ~]# id -Z
+[root@soula ~]# ps auxZ                 
+[root@soula ~]# ls -Z
+
+
+Ex:
+system_u:object_r:admin_home_t:s0
+system_u      ... User type
+object_r      ... Role type
+admin_home_t  ... Type
+s0            ... level: mls(multi level security), mcs(multi category security)
+================================================================
+SELinux modes:
+Enforcing mode: SELinux both logs and protects.
+Permissive mode: used to trouble shoot issues. SELinux only logs.
+Disabled mode: completely disables SELinux. 
+- No reboot is required to go from enforcing to permissive or back again.
+- A system reboot is required to disable SELinux entirely, or to get from disabled mode to enforcing or permissive mode.
+
+[root@soula ~]# getenforce 
+[root@soula ~]# sestatus
+[root@soula ~]# setenforce 0                   (permissive mode)
+[root@soula ~]# setenforce 1                   (enforcing mode)
+[root@soula ~]# vim /etc/selinux/config        (RHEL8 )
+[root@soula ~]# vim /etc/sysconfig/selinux     (older versions)
+================================================================
+Changing SELinux Contexts:
+- The context of the parent directory is assigned to the newly created file.
+[root@soula ~]# yum -y install httpd
+[root@soula ~]# systemctl start httpd
+[root@soula ~]# systemctl enable httpd
+[root@soula ~]# setenforce 0
+[root@soula ~]# vim /var/www/html/file.txt
+
+firefox>> http://127.0.0.1/file.txt
+[root@soula ~]# curl http://127.0.0.1
+
+[root@soula ~]# chcon -t test_t /var/www/html/file.txt 
+[root@soula ~]# setenforce 1               (file now will not be accessible)
+lab1
+[root@soula ~]# touch /tmp/index1.html
+[root@soula ~]# touch /tmp/index2.html
+[root@soula ~]# mv /tmp/index1.html /var/www/html
+[root@soula ~]# cp /tmp/index2.html /var/www/html
+[root@soula ~]# ls -Zd /var/www/html
+[root@soula ~]# semanage fcontext -a -t httpd_sys_content_t "/var/www/html/index1.html(/.*)?"
+[root@soula ~]# restorecon -R -v /var/www/html/index1.html
+lab2
+[root@soula ~]# vim /etc/httpd/conf/httpd.conf 
+[root@soula ~]# mkdir /web
+ensure that selinux is enforcing 
+[root@soula ~]# echo "hello from /web" > /web/index.html
+[root@soula ~]# curl http://127.0.0.1
+[root@soula ~]# setenforce 0
+[root@soula ~]# curl http://127.0.0.1
+[root@soula ~]# semanage fcontext -a -t httpd_sys_content_t "/web/index1.html(/.*)?"
+[root@soula ~]# restorecon -R -v /var/www/html/index1.html
+
+lab3 
+change the default http port
+[root@soula ~]# vim /etc/httpd/conf/httpd.conf 
+[root@soula ~]# systemctl restart httpd
+[root@soula ~]# systemctl status httpd
+[root@soula ~]# curl http://127.0.0.1/index1.html
+[root@soula ~]# setenforce 0
+[root@soula ~]# systemctl status httpd
+[root@soula ~]# systemctl restart httpd
+[root@soula ~]# curl http://127.0.0.1:8888
+[root@soula ~]# semanage port --list |grep http
+[root@soula ~]# semanage port --add --type http_port_t -p tcp 8888
+[root@soula ~]# setenforce 1
+[root@soula ~]# curl http://127.0.0.1:8888
+
+
+
+Best wishes:
+Marwen Soula:)

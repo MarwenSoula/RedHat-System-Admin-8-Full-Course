@@ -1,0 +1,58 @@
+Netfilter and firewalld concepts:
+- The Linux kernel includes netfilter, which allows kernel modules to inspect every packet traversing the system.
+- Tools like iptables, ip6tables, ebtables and firewalld are used to manage netfilter.
+- Firewalld both covers IPv4 and IPv6 settings (new in RHEL8  ).
+- Firewalld classfies the network into zones (private, public, DMZ)demilitarized zone and each zone includes interfaces.
+- The default zone is set to public and interfaces are assigned to public if no changes are made. The lo interface is treated as if it were in the trusted zone.
+==============================================
+firewalld config:
+[root@soula ~]# yum install firewall-config
+Or)
+Applications> sundry> firewall
+[root@soula ~]# systemctl status firewalld
+[root@soula ~]# firewall-cmd --get-zones        (list all zones)
+[root@soula ~]# firewall-cmd --get-services     (list all services)
+[root@soula ~]# firewall-cmd --get-default-zone 
+[root@soula ~]# firewall-cmd --set-default-zone=home
+[root@soula ~]# ls /usr/lib/firewalld/services/       (default system services)
+[root@soula ~]# firewall-cmd --zone=public --add-service=high-availability       (volatile)
+[root@soula ~]# firewall-cmd --permanent --zone=public --add-service=high-availability    (permanent)
+[root@soula ~]# firewall-cmd --list-all         (to verify)
+
+- If not configured, the default zone will be used.
+==============================================
+Examples:
+- zone:DMZ , allow SSH, NTP, FTP, VNC, apache and DNS
+
+[root@soula ~]# firewall-cmd --get-default-zone 
+[root@soula ~]# firewall-cmd --set-default-zone=dmz
+[root@soula ~]# firewall-cmd --get-services 
+[root@soula ~]# firewall-cmd --permanent --add-service=ssh
+[root@soula ~]# firewall-cmd --permanent --add-service=ntp
+[root@soula ~]# firewall-cmd --permanent --add-service=ftp
+[root@soula ~]# firewall-cmd --permanent --add-service=vnc-server
+[root@soula ~]# firewall-cmd --permanent --add-service=http
+[root@soula ~]# firewall-cmd --permanent --add-service=dns
+
+Or:
+[root@soula ~]# firewall-cmd --permanent --add-port=ssh/tcp
+[root@soula ~]# firewall-cmd --list-all       
+- Any changes made in the Permanent configuration will not become active until the next time that the firewalld service unit is restarted or rloaded. 
+   Likewise, any changes made in the Runtime configuration will not survive a reload or restart of the firewalld service.
+[root@soula ~]# systemctl restart firewalld
+Or)
+[root@soula ~]# firewall-cmd --reload 
+==============================================
+Remove a service or a port:
+
+[root@soula ~]# firewall-cmd --add-port=443/tcp
+[root@soula ~]# firewall-cmd --permanent --add-port=443/tcp
+
+[root@soula ~]# firewall-cmd  --remove-service=dns
+[root@soula ~]# firewall-cmd --permanent --remove-service=dns
+[root@soula ~]# firewall-cmd --remove-port=22/tcp
+[root@soula ~]# firewall-cmd --permanent --remove-port=22/tcp
+==============================================
+
+Best wishes:
+Marwen Soula:)
