@@ -1,0 +1,38 @@
+
+Selecting a Boot Target:
+1- shutdown.target 
+2- multi-user.target         (multiple users, text-based logins only)
+3- graphical.target          (multiple users, graphical and text-based logins)
+4- reboot.target
+5- rescue.target
+6- emergency.target          (the root file system mounted read-only)
+7- and more...
+
+[root@soula ~]# systemctl get-default 
+[root@soula ~]# systemctl set-default graphical.target
+[root@soula ~]# systemctl set-default multi-user.target 
+[root@soula ~]# systemctl set-default rescue.target
+[root@soula ~]# systemctl default
+=======================================================
+
+Password Recovery:
+1. Reboot the system.
+2. Interrupt the boot loader countdown by pressing any key.
+3. Press e to edit the selected entry.
+4. Move the cursor to the kernel command line (the line that starts with linux16).
+5. Append rd.break (this will break just before control is handed from the init ramfs to the actual system).
+6. Press Ctrl+x to boot with the changes.
+7. mount -o remount,rw /sysroot
+8. chroot /sysroot
+9. passwd root
+10. touch /.autorelabel
+11. Ctrl+D
+12. Ctrl+D
+=======================================================
+
+
+Best wishes:
+Marwen Soula:)
+
+
+
