@@ -1,0 +1,61 @@
+Logical volume management (LVM):
+- Volumes can consist of more than one disk.
+- Easy resize operation.
+- Easy replacement of failing disks.
+- Advanced options such a working with snapshots, which allows you to create backups even if they are open.
+- Easy to add new volumes.
+- Easy to add many volumes.
+- Upto 256 logical volume.
+
+steps:
+1- Partition physical storage
+2- Create physical volume (PV)   (LVM automatically segments PVs into physical extents (PE))
+3- Create volume group(VG)       (PV can only be allocated to a single VG)
+4- Create logical volume (LV)
+- Mirroring causes each Logical Extent to map to two Physical Extents.
+[root@soula ~]# pvcreate /dev/sdb1 /dev/sdc1 /dev/sdd1   (label the partition for use with LVM)
+[root@soula ~]# pvdisplay 
+[root@soula ~]# pvdisplay /dev/sdb1
+[root@soula ~]# pvs
+[root@soula ~]# vgcreate VG1 /dev/sdb /dev/sdc1 /dev/sdd1
+[root@soula ~]# vgdisplay 
+[root@soula ~]# vgdisplay VG1 
+[root@soula ~]# vgs
+[root@soula ~]# lvcreate -n LV1 -L 2G VG1
+[root@soula ~]# lvdisplay 
+[root@soula ~]# lvdisplay /dev/VG1/LV1
+[root@soula ~]# lvs
+[root@soula ~]# mkfs.xfs /dev/VG1/LV1
+[root@soula ~]# mkdir data
+[root@soula ~]# mount /dev/VG1/LV1 data
+[root@soula ~]# df -h
+
+- Removing a logical volume will destroy any data stored on the logical volume.
+[root@soula ~]# lvremove /dev/VG1/LV1    (file system must be unmounted first)
+[root@soula ~]# vgremove VG1
+[root@soula ~]# pvremove /dev/sdb1 /dev/sdc1 /dev/sdd1
+===========================================================
+Extending Logical Volumes (no down time):
+
+[root@soula ~]# pvcreate /dev/sde1
+[root@soula ~]# vgextend VG1 /dev/sde1
+[root@soula ~]# lvextend -L +3G /dev/VG1/LV1 
+[root@soula ~]# xfs_growfs /dev/VG1/LV1           (update the file system for XFS file systems)
+[root@soula ~]# resize2fs /dev/VG1/LV1            (update the file system for other file systems)
+
+Or:
+[root@soula ~]# lvextend -r -L +3G /dev/VG1/LV1   (extend and update in one step)
+===========================================================
+Shrinking a volume group:
+- XFS doesn't support shrinking.
+[root@soula ~]# umount data
+[root@soula ~]# resize2fs /dev/VG1/LV1 100M
+[root@soula ~]# e2fsck -f /dev/VG1/LV1
+[root@soula ~]# lvreduce --size -3G /dev/VG1/LV1 
+[root@soula ~]# lvreduce --size -r -3G /dev/VG1/LV1 
+[root@soula ~]# vgreduce VG1 /dev/sde1          (removes sde1 from VG1)
+[root@soula ~]# mount /dev/VG1/LV1  data
+===========================================================
+
+Best wishes:
+Marwen Soula)
