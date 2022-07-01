@@ -1,0 +1,52 @@
+Network File System:
+- RHEL8 supports NFSv4 by default, and falls back automatically to NFSv3 and NFSv2 if that is not available.
+- NFSv4 uses the TCP protocol to communicate with the server, while older versions of NFS may use either TCP or UDP. 
+- NFS requires rpcbind, which dynamically assigns ports for RPC services and can cause problems for configuring firewall rules. To allow clients to access NFS shares behind a firewall,0
+  edit the /etc/sysconfig/nfs configuration file to control which ports the required RPC services run on. 
+( Allow TCP and UDP port 2049 for NFS and allow TCP and UDP port 111 (rpcbind/sunrpc)). 
+- NFS doesn't support user authentication.
+- All users can see the exported directories even if they don't have access.
+on the server side
+[root@soula ~]# yum install -y nfs-utils
+[root@soula ~]# systemctl start nfs-server             
+[root@soula ~]# systemctl enable nfs-server      
+[root@soula ~]# 
+[root@soula ~]# vim /etc/exports
+/data          *(rw,no_root_squash)
+
+[root@soula ~]# systemctl restart nfs-server        (terminates all open sessions)
+
+on the client side
+[root@client ~]# showmount -e 192.168.12.128
+[root@client ~]# mount 192.168.1.100:/data /root/data   (mount on runtime)
+[root@client ~]# df -hT                             (nfs4)
+[root@client ~]# vim /etc/fstab 
+192.168.12.128:/data     /nfs     nfs     _netdev         0  0
+
+
+
+==========================================================================
+Autofs:
+The automounter is a service (autofs} that can automatically mount NFS shares "on demand," and will automatically unmount NFS shares when they are no longer being used.
+
+[root@client ~]# yum install -y autofs
+[root@client ~]# systemctl start autofs
+[root@client ~]# systemctl enable autofs
+[root@client ~]# vim /etc/auto.master
+/nfs    /etc/auto.autofs
+
+[root@client ~]# vim /etc/auto.autofs
+key     -rw     192.168.12.128:/data
+where key is the target directory we want to access.
+
+[root@client ~]# systemctl restart autofs
+[root@client ~]# cd /nfs/key
+[root@client ~]# df -hT
+
+
+[root@client ~]# vim /etc/autofs.conf 
+timeout = 300                       (the idle user will be disconnected after 5 min by default)
+==========================================================================
+
+Best wishes:
+Marwen Soula:)
