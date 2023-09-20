@@ -4,7 +4,7 @@ change directory
 [root@soula ~]# cd Videos
 [root@soula ~]# pwd
 [root@soula Videos]# cd /root/Documents
-[root@soula ~]# cd ~abeer               (go to the home directory of the user)
+[root@soula ~]# cd ~soula               (go to the home directory of the user)
 [root@soula abeer]# cd -                (go to the previous directory)
 [root@soula abeer]# cd ..               (up one level)
 [root@soula abeer]# cd ../..            (up two levels)
@@ -30,9 +30,9 @@ Creating files:
 Create directories:
 [root@soula ~]# mkdir dir1 dir2 dir3
 [root@soula ~]# mkdir -p dir4/dir5
-[root@soula ~]# mkdir 'abeer hosni'
-[root@soula ~]# mkdir "abeer hosni"
-[root@soula ~]# mkdir abeer\ hosni
+[root@soula ~]# mkdir 'soula marwen'
+[root@soula ~]# mkdir "soula marwen"
+[root@soula ~]# mkdir soula\ marwen
 ========================================
 Copy files and diretories:
 [root@soula ~]# cp file1 file2      (creates file2)
